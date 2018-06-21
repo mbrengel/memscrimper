@@ -8,7 +8,7 @@ MemScrimper is a a novel methodology to compress memory dumps of malware sandbox
 The paper is available [here](https://christian-rossow.de/publications/memscrimper-dimva2018.pdf). You can cite it with the following BibTeX entry:
 ```
 @inproceedings{MemScrimper,
-  author    = {Brengel, Michael and Rossow, Christian},
+  author    = {Michael Brengel and Christian Rossow},
   title     = {{\textsc{MemScrimper}: Time- and Space-Efficient Storage of Malware Sandbox Memory Dumps}},
   booktitle = {Proceedings of the Conference on Detection of Intrusions and Malware, and Vulnerability Assessment~(DIMVA)},
   year      = {2018}
