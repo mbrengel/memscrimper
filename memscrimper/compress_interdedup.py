@@ -174,7 +174,7 @@ def decompress(source, target):
                         fills[pagenr] = reference_list[i]
 
             # parse diffs
-            if delta is not None:
+            if delta:
                 diffs = {}
                 pagenrs = list(util.parse_pagenr_list(fsource))
                 for i in xrange(len(pagenrs)):
@@ -224,7 +224,7 @@ def decompress(source, target):
                         different_distinct.add(page)
                         different_total += 1
                         ftarget.write(page)
-                    elif delta is not None and pagenr in diffs:
+                    elif delta and pagenr in diffs:
                         freference.seek(pagenr * pagesize)
                         page = freference.read(pagesize)
                         newpage = util.apply_diff(page, diffs[pagenr])
@@ -247,7 +247,7 @@ def decompress(source, target):
     logging.debug("Deduplicated pages at the same offset: %d/%d (%d/%d)", same_total, final, len(same_distinct), len(seen))
     logging.debug("Deduplicated pages at different offsets: %d/%d (%d/%d)", len(fills), final, len(different_distinct), len(seen))
     logging.debug("Deduplicated pages in total: %d/%d (%d/%d)", same_total + len(fills), final, len(same_distinct | different_distinct), len(seen))
-    if delta is not None:
+    if delta:
         logging.debug("Diffed pages: %d/%d (%d/%d)", len(diffs), final, len(diff_seen), len(seen))
     logging.debug("Done")
 
@@ -256,7 +256,7 @@ def decompress(source, target):
 
 def create_method_name(nointra, delta, inner):
     nointra = "nointra" if nointra else ""
-    delta = delta+"delta" if delta is not None else ""
+    delta = "delta" if delta is not None else ""
     inner = inner if inner is not None else ""
 
     return "interdedup{}{}{}".format(nointra, delta, inner)
@@ -265,15 +265,15 @@ def create_method_name(nointra, delta, inner):
 def parse_method_name(s):
     assert s.startswith("interdedup")
     s = s[len("interdedup"):]
-    delta = None
+    delta = False
     nointra = False
     if s.startswith("nointra"):
         nointra = True
         s = s[len("nointra"):]
-    delta = None
+    delta = False
     if "delta" in s:
-        delta = s[:s.index("delta")]
-        s = s[s.index("delta") + len(delta)-1:]
+        delta = True
+        s = s[s.index("delta") + len("delta"):]
     inner = s if len(s) > 1 else None
 
     return nointra, delta, inner
