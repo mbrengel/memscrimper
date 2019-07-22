@@ -288,7 +288,7 @@ void command_socket::handle_client_connection(int cl_sock, int epfd, struct epol
       send(cl_sock, cl_ack.data(), 2, 0);
       /* cast to string so we can pass by value
        * read_buf +2 will cut of MSG_LEN and MSG_ID (only needed for networking) */
-      std::string msg(read_buf + 2 , read_bytes + 1);
+      std::string msg(read_buf + 2 , read_bytes - 1);
 
       // request handler will process the request
       this->handler_->handle_request(msg);
